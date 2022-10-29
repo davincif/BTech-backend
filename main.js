@@ -12,6 +12,12 @@ function init() {
   // loading modules
   console.info("loading modules...");
   for (let apiModule of apiModules) {
+    // laoding middlewares
+    for (let middleware of apiModule.middlewares) {
+      console.log('--', apiModule.prefix, middleware);
+      app.use(apiModule.prefix, middleware);
+    }
+
     // laoding GETs
     for (let get of apiModule.get) {
       get[0] = `${apiModule.prefix}${get[0]}`;

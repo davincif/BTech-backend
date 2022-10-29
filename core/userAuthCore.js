@@ -45,6 +45,17 @@ export async function logout({ name }) {
 }
 
 /**
+ * Checks if the given user is loged and authenticated
+ * @param {*} param0 name and jwt of the user
+ * @returns {boolean}
+ */
+export async function islogedAndAuthenticated({ name, jwt }) {
+  let auth = await DB_ADAPTOR.getAuthentication(name);
+
+  return Boolean(auth) && Boolean(jwt) && auth.authKey === jwt;
+}
+
+/**
  * Confirm if the given user really has the given password
  * @param {*} param0 user name and password
  * @returns {Promise<boolean>} if the passwords matchs or not

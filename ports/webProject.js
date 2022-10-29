@@ -2,6 +2,7 @@ import { ApiConfigure } from "../objects/in/apiConfigure.js";
 import { StandardAnswer } from "../objects/out/standardAnswer.js";
 import { DB_ADAPTOR } from "../adaptors/adaptorDB.js";
 import * as CoreErros from "../objects/core/coreErros.js";
+import * as jwtAuthentication from "../libraries/apiMiddlewares/jwtAuthentication.js";
 
 /**
  * Creates a new Project for the given user
@@ -78,6 +79,7 @@ async function del(req, res) {
 // constucting exports
 const webProjectConfigure = new ApiConfigure();
 webProjectConfigure.prefix = "/project";
+webProjectConfigure.middlewares.push(jwtAuthentication.authRequired);
 webProjectConfigure.get.push(["/getAll", create]);
 webProjectConfigure.post.push(["/create", getAll]);
 webProjectConfigure.put.push(["/update", update]);
