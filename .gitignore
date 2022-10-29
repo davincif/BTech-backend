@@ -1,2 +1,5 @@
 # javascript
 node_modules/
+
+# detabase related
+db.json

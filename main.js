@@ -2,9 +2,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 
-import { userRegistrationConfigure } from "./ports/userRegistration.js";
+import { webUserConfigure } from "./ports/webUser.js";
 
-const apiModules = [userRegistrationConfigure];
+const apiModules = [webUserConfigure];
 const app = express();
 
 function init() {
@@ -48,11 +48,13 @@ function init() {
 }
 
 // initializing
+app.use(express.json());
+
 init();
 
 app.get("/", function (req, res) {
   const answer = "Lock'n'load, sir! 🤖";
-  res.send(answer);
+  res.status(200).send(answer);
   console.info(answer);
 });
 
