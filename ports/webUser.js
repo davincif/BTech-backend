@@ -180,7 +180,6 @@ async function logout(req, res) {
   let name = req.body.name;
 
   // actually delegating flow of execution for the user case
-  let auth;
   let httpStatus = 200;
 
   try {
@@ -205,6 +204,7 @@ async function logout(req, res) {
 
 // constucting exports
 const webUserConfigure = new ApiConfigure();
+webUserConfigure.prefix = "/user";
 webUserConfigure.post.push(["/register", register]);
 webUserConfigure.post.push(["/login", login]);
 webUserConfigure.post.push(["/logout", logout]);

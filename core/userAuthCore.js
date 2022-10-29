@@ -16,7 +16,7 @@ export async function login({ name, password }) {
   if (!isPasswordConfirmed) {
     // user cannot be authenticated
     const coreErr = new TObjectError();
-    coreErr.code = coreErr.INCORRECT_PASSWORD;
+    coreErr.code = CoreErros.INCORRECT_PASSWORD;
     coreErr.msg = "PASSWORD DOES NOT MATCH";
 
     throw coreErr;
