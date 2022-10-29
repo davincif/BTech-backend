@@ -5,10 +5,11 @@ import express from "express";
 const app = express();
 
 app.get("/", function (req, res) {
-  res.send("Hello World");
+  res.send("Lock'n'load, sir! 🤖");
+  console.info("Lock'n'load, sir! 🤖");
 });
 
 const server = app.listen(process.env.PORT);
 server.on("listening", () => {
-  console.log(`🪖 Captan! Waiting orders on port ${process.env.PORT} 🫡`);
+  console.info(`🪖 Captan! Waiting orders on port ${process.env.PORT} 🫡`);
 });
