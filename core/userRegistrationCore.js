@@ -8,7 +8,7 @@ import * as CoreErros from "../objects/core/coreErros.js";
  * @returns {TObjectUser} The successfully saved object
  */
 export async function register(user) {
-  if (!user || !user.name || !user.birth) {
+  if (!user || !user.name || !user.birth || !user.password) {
     const coreErr = new TObjectError();
     coreErr.code = CoreErros.MISSING_DATA;
     coreErr.msg = "MISSING INFORMATION ON USER";

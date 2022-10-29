@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import { AuthenUserDB } from "../../objects/out/authenUserDB.js";
 import { UserDB } from "../../objects/out/userDB.js";
 
 const dbPath = "./db.json";
@@ -22,16 +23,18 @@ export async function saveUser(user) {
   const dbuser = new UserDB();
   dbuser.name = user.name;
   dbuser.birthDate = user.birth;
+  dbuser.password = user.password;
 
   // checking of unicity
-  if(await searchByName(dbuser.name)) {
+  if (await searchByName(dbuser.name)) {
     throw 2;
   }
 
   // "transaction"
-  db.user.push({
+  db.users.push({
     name: dbuser.name,
     birthDate: dbuser.birthDate,
+    password: dbuser.password,
   });
 
   // converting back db object for transaction object
@@ -54,9 +57,43 @@ export async function searchByName(name) {
     throw 1;
   }
 
-  let foundUser = db.user.find((user) => user.name === name);
+  let foundUser = db.users.find((user) => user.name === name);
 
   return foundUser;
+}
+
+/**
+ * Saves the Authentication key in fast place for quick consulting
+ * @param {string} userName the user name to sabe the authkey
+ * @param {string} authKey the auth key to be saved
+ */
+export async function saveAuthentication(userName, authKey) {
+  // searching for the user existense
+  if (!searchByName(userName)) {
+    throw 2;
+  }
+
+  // converting object for data base use
+  const userAuth = new AuthenUserDB();
+  userAuth.authKey = authKey;
+
+  // "transaction"
+  db.sections[userName] = { authKey: userAuth.authKey };
+
+  // converting back db object for transaction object
+  // code (nothing to do here for now)
+
+  // commit
+  saveDb();
+}
+
+/**
+ * Gets the authentication Obejct if it exists
+ * @param {string} userName the user name to sabe the authkey
+ * @returns {AuthenUserDB | undefined}
+ */
+export async function getAuthentication(userName) {
+  return db.sections[userName];
 }
 
 /* local fucntion */
@@ -86,6 +123,7 @@ function loadDb() {
  */
 function initDb() {
   db = {
-    user: [],
+    users: [],
+    sections: {},
   };
 }

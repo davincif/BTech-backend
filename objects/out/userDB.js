@@ -4,4 +4,5 @@
 export class UserDB {
   name = "";
   birthDate = "";
+  password = "";
 }
