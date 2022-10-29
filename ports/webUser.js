@@ -19,25 +19,25 @@ async function register(req, res) {
     Object.keys(req.body).length === 0 ||
     Array.isArray(req.body)
   ) {
-    answer.status = `UC1M1E1`;
+    answer.status = `P1M1E1`;
     answer.msg = "missing body info";
     res.status(400).send(answer);
     return;
   }
   if (!req.body.name) {
-    answer.status = `UC1M1E2`;
+    answer.status = `P1M1E2`;
     answer.msg = "missing name";
     res.status(400).send(answer);
     return;
   }
   if (!req.body.birth) {
-    answer.status = `UC1M1E2`;
+    answer.status = `P1M1E2`;
     answer.msg = "missing date of birth";
     res.status(400).send(answer);
     return;
   }
   if (!req.body.password) {
-    answer.status = `UC1M1E2`;
+    answer.status = `P1M1E2`;
     answer.msg = "missing password";
     res.status(400).send(answer);
     return;
@@ -56,7 +56,7 @@ async function register(req, res) {
   try {
     registred = await UserRegistrationCore.register(user);
   } catch (error) {
-    answer.status = `UC1M1E3`;
+    answer.status = `P1M1E3`;
     answer.msg = error.msg;
     switch (error.code) {
       case CoreErros.MISSING_DATA:
@@ -97,20 +97,20 @@ async function login(req, res) {
     Object.keys(req.body).length === 0 ||
     Array.isArray(req.body)
   ) {
-    answer.status = `UC1M2E1`;
+    answer.status = `P1M2E1`;
     answer.msg = "missing body info";
     res.status(400).send(answer);
     return;
   }
 
   if (!req.body.name) {
-    answer.status = `UC1M2E2`;
+    answer.status = `P1M2E2`;
     answer.msg = "missing name";
     res.status(400).send(answer);
     return;
   }
   if (!req.body.password) {
-    answer.status = `UC1M2E3`;
+    answer.status = `P1M2E3`;
     answer.msg = "missing password";
     res.status(400).send(answer);
     return;
@@ -131,7 +131,7 @@ async function login(req, res) {
       password: user.password,
     });
   } catch (error) {
-    answer.status = `UC1M2E4`;
+    answer.status = `P1M2E4`;
 
     switch (error.code) {
       default:
@@ -149,9 +149,64 @@ async function login(req, res) {
   res.status(httpStatus).send(answer);
 }
 
+/**
+ * Logs the user out the system
+ * @param {*} req express 'rep' from route
+ * @param {*} res express 'res' from route
+ */
+async function logout(req, res) {
+  const answer = new StandardAnswer();
+
+  // data consistency check
+  if (
+    !req.body ||
+    Object.keys(req.body).length === 0 ||
+    Array.isArray(req.body)
+  ) {
+    answer.status = `P1M3E1`;
+    answer.msg = "missing body info";
+    res.status(400).send(answer);
+    return;
+  }
+
+  if (!req.body.name) {
+    answer.status = `P1M3E2`;
+    answer.msg = "missing name";
+    res.status(400).send(answer);
+    return;
+  }
+
+  // transforming the received data into transfer objects
+  let name = req.body.name;
+
+  // actually delegating flow of execution for the user case
+  let auth;
+  let httpStatus = 200;
+
+  try {
+    await UserAuthCore.logout({ name });
+  } catch (error) {
+    answer.status = `P1M3E4`;
+
+    switch (error.code) {
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
+
+  // success case
+  if (httpStatus === 200) {
+    answer.status = "0";
+  }
+
+  res.status(httpStatus).send(answer);
+}
+
 // constucting exports
 const webUserConfigure = new ApiConfigure();
 webUserConfigure.post.push(["/register", register]);
 webUserConfigure.post.push(["/login", login]);
+webUserConfigure.post.push(["/logout", logout]);
 
 export { webUserConfigure };

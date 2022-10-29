@@ -89,11 +89,28 @@ export async function saveAuthentication(userName, authKey) {
 
 /**
  * Gets the authentication Obejct if it exists
- * @param {string} userName the user name to sabe the authkey
+ * @param {string} userName the user name to be searched
  * @returns {AuthenUserDB | undefined}
  */
 export async function getAuthentication(userName) {
   return db.sections[userName];
+}
+
+/**
+ * Delete de given authentication form the database
+ * @param {string} userName the user name to be deleted
+ * @returns {boolean} weather if the was something to be deleted or not
+ */
+export async function deleteAuthentication(userName) {
+  let section = db.sections[userName];
+  if (!section) {
+    return false;
+  }
+
+  delete db.sections[userName];
+  saveDb();
+
+  return true;
 }
 
 /* local fucntion */

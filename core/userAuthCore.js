@@ -27,10 +27,21 @@ export async function login({ name, password }) {
 
   // save user's jwt in a safe and fast place
   DB_ADAPTOR.saveAuthentication(name, authentication).catch((err) => {
-    console.warn('Untreated error!!', err);
-  })
+    console.warn("Untreated error!!", err);
+  });
 
   return authentication;
+}
+
+/**
+ * Logs out the user
+ * @param {*} param0 user name
+ * @returns {Promise<void>}
+ */
+export async function logout({ name }) {
+  DB_ADAPTOR.deleteAuthentication(name).catch((err) => {
+    console.warn("Untreated error!!", err);
+  });
 }
 
 /**
@@ -38,7 +49,7 @@ export async function login({ name, password }) {
  * @param {*} param0 user name and password
  * @returns {Promise<boolean>} if the passwords matchs or not
  */
-export async function confirmPassword({ name, password }) {
+async function confirmPassword({ name, password }) {
   let matchs;
 
   let savedInfos;
