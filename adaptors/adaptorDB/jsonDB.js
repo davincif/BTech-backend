@@ -2,6 +2,8 @@ import * as fs from "fs";
 
 import { AuthenUserDB } from "../../objects/out/authenUserDB.js";
 import { UserDB } from "../../objects/out/userDB.js";
+import { AuthenProjectDB } from "../../objects/out/authenProjectDB.js";
+import { DB_ERRORS } from "./errorCodes.js";
 
 const dbPath = "./db.json";
 const encoding = "utf8";
@@ -16,7 +18,7 @@ loadDb();
  */
 export async function saveUser(user) {
   if (!user || !user.name || !user.birth) {
-    throw 1;
+    throw DB_ERRORS.INVALID_ARGS;
   }
 
   // converting object for data base use
@@ -27,15 +29,15 @@ export async function saveUser(user) {
 
   // checking of unicity
   if (await searchByName(dbuser.name)) {
-    throw 2;
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
   }
 
   // "transaction"
-  db.users.push({
+  db.users[dbuser.name] = {
     name: dbuser.name,
     birthDate: dbuser.birthDate,
     password: dbuser.password,
-  });
+  };
 
   // converting back db object for transaction object
   // code (nothing to do here for now)
@@ -54,10 +56,10 @@ export async function saveUser(user) {
  */
 export async function searchByName(name) {
   if (!name) {
-    throw 1;
+    throw DB_ERRORS.INVALID_ARGS;
   }
 
-  let foundUser = db.users.find((user) => user.name === name);
+  let foundUser = db.users[name];
 
   return foundUser;
 }
@@ -70,7 +72,7 @@ export async function searchByName(name) {
 export async function saveAuthentication(userName, authKey) {
   // searching for the user existense
   if (!searchByName(userName)) {
-    throw 2;
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
   }
 
   // converting object for data base use
@@ -113,7 +115,48 @@ export async function deleteAuthentication(userName) {
   return true;
 }
 
-/* local fucntion */
+/**
+ * Save the given project if the given user exists and the given project wasn't
+ * already crated
+ * @param {TObjectProject} project project info
+ */
+export async function saveProject(project) {
+  // searching for the user existense
+  let user = await searchByName(project.owner);
+  if (!user) {
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
+  }
+
+  user = db.users[user.name];
+
+  // create projects for this user if needed
+  if (!user.projects) {
+    user.projects = {};
+  }
+
+  // check if this project already exists
+  if (user.projects[project.name]) {
+    throw DB_ERRORS.ENTRY_ALREADY_EXISTS;
+  }
+
+  // converting object for data base use
+  const dbproject = new AuthenProjectDB();
+  dbproject.name = project.name;
+  dbproject.creationDate = project.creationDate;
+
+  // "transaction"
+  user.projects[dbproject.name] = {
+    name: dbproject.name,
+    creationDate: dbproject.creationDate,
+  };
+
+  // commit
+  saveDb();
+
+  return project;
+}
+
+/* LOCAL FUNCTIONS */
 
 /**
  * Save the data base presente in the variable 'db'
@@ -140,7 +183,7 @@ function loadDb() {
  */
 function initDb() {
   db = {
-    users: [],
+    users: {},
     sections: {},
   };
 }

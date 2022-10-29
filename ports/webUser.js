@@ -131,9 +131,25 @@ async function login(req, res) {
       password: user.password,
     });
   } catch (error) {
-    answer.status = `P1M2E4`;
-
     switch (error.code) {
+      case CoreErros.INCORRECT_PASSWORD:
+        answer.status = `P1M2E4`;
+        answer.msg = error.msg;
+        httpStatus = 403;
+        break;
+
+      case CoreErros.INCORRECT_PASSWORD:
+        answer.status = `P1M2E5`;
+        answer.msg = error.msg;
+        httpStatus = 403;
+        break;
+
+      case CoreErros.MISSING_DATA:
+        answer.status = `P1M2E6`;
+        answer.msg = error.msg;
+        httpStatus = 403;
+        break;
+
       default:
         httpStatus = 500;
         break;

@@ -1,6 +1,7 @@
 import { DB_ADAPTOR } from "../adaptors/adaptorDB.js";
 import { TObjectError } from "../objects/transionals/tObjectError.js";
 import * as CoreErros from "../objects/core/coreErros.js";
+import { DB_ERRORS } from "../adaptors/adaptorDB/errorCodes.js";
 
 /**
  * Register the given user
@@ -22,12 +23,12 @@ export async function register(user) {
     const coreErr = new TObjectError();
 
     switch (error) {
-      case 1:
+      case DB_ERRORS.INVALID_ARGS:
         coreErr.code = CoreErros.MISSING_DATA;
         coreErr.msg = "MISSING INFORMATION ON USER";
         throw coreErr;
 
-      case 2:
+      case DB_ERRORS.ENTRY_DOESNT_EXIST:
         coreErr.code = CoreErros.REGISTER_ALREADY_EXISTS;
         coreErr.msg = "USER ALREADY EXISTS";
         throw coreErr;

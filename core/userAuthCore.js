@@ -11,6 +11,16 @@ import * as JWT from "../libraries/jwt.js";
 export async function login({ name, password }) {
   let authentication = "";
 
+  // does this user exists?
+  let userExist = await DB_ADAPTOR.searchByName(name);
+  if (!userExist) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "USER DOES NOT EXIST";
+
+    throw coreErr;
+  }
+
   // confirm is the user had sent the correct password
   let isPasswordConfirmed = await confirmPassword({ name, password });
   if (!isPasswordConfirmed) {

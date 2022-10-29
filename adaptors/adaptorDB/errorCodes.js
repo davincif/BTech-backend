@@ -1,0 +1,5 @@
+export const DB_ERRORS = {
+  INVALID_ARGS: 1,
+  ENTRY_DOESNT_EXIST: 2,
+  ENTRY_ALREADY_EXISTS: 3,
+};

@@ -14,7 +14,7 @@ function init() {
   for (let apiModule of apiModules) {
     // laoding middlewares
     for (let middleware of apiModule.middlewares) {
-      console.log('--', apiModule.prefix, middleware);
+      console.info(`adding middlewares on "${apiModule.prefix}"...`);
       app.use(apiModule.prefix, middleware);
     }
 
