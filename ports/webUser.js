@@ -4,6 +4,7 @@ import * as UserAuthCore from "../core/userAuthCore.js";
 import { StandardAnswer } from "../objects/out/standardAnswer.js";
 import { TObjectUser } from "../objects/transionals/tObjectUser.js";
 import * as CoreErros from "../objects/core/coreErros.js";
+import { UserWeb } from "../objects/out/userWeb.js";
 
 /**
  * Saves a new user
@@ -158,8 +159,12 @@ async function login(req, res) {
 
   // success case
   if (httpStatus === 200) {
+    let userWeb = new UserWeb();
+    userWeb.jwt = auth;
+    userWeb.name = user.name;
+
     answer.status = "0";
-    answer.data = auth;
+    answer.data = userWeb;
   }
 
   res.status(httpStatus).send(answer);

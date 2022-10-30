@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import cors from "cors";
 
 import { webUserConfigure } from "./ports/webUser.js";
 import { webProjectConfigure } from "./ports/webProject.js";
@@ -57,6 +58,12 @@ function init() {
 
 // initializing
 app.use(express.json());
+const corsOptions = {
+  origin: process.env.CORS_ORIGINS,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+console.log("corsOptions", corsOptions);
+app.use(cors(corsOptions));
 
 init();
 
