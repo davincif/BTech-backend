@@ -79,6 +79,52 @@ export async function getAll({ ownerName }) {
 }
 
 /**
+ * Search the specific project from the specific user
+ * @param {*} param0 owner and project's name
+ * @returns {* | undefined} the deleted project
+ */
+export async function getProject({ ownerName, projName }) {
+  if (!ownerName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION OWNER NAME";
+    throw coreErr;
+  }
+  if (!projName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION PROJECT NAME";
+    throw coreErr;
+  }
+
+  let project;
+  try {
+    project = await DB_ADAPTOR.deleteProject(ownerName, projName);
+  } catch (error) {
+    const coreErr = new TObjectError();
+
+    switch (error) {
+      case DB_ERRORS.ENTRY_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS USER EXIST?";
+        throw coreErr;
+
+      case DB_ERRORS.PROJECT_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS PROJECT EXIST IN THIS USER?";
+        throw coreErr;
+
+      default:
+        coreErr.code = CoreErros.UNKOWN;
+        coreErr.msg = "DATABASE UNKOWN ERROR";
+        throw coreErr;
+    }
+  }
+
+  return project;
+}
+
+/**
  * Update a particular Project of a user
  */
 export async function update() {

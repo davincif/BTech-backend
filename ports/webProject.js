@@ -98,7 +98,7 @@ async function getAll(req, res) {
     switch (error.code) {
       case CoreErros.ENTRY_DOESNT_EXIST:
         httpStatus = 400;
-        answer.status = `P2M1E5`;
+        answer.status = `P2M2E5`;
         answer.msg = error.msg;
         break;
 
@@ -142,15 +142,61 @@ async function update(req, res) {
  */
 async function del(req, res) {
   const answer = new StandardAnswer();
+  // data consistency check
+  if (
+    !req.body ||
+    Object.keys(req.body).length === 0 ||
+    Array.isArray(req.body)
+  ) {
+    answer.status = `P2M4E1`;
+    answer.msg = "missing body info";
+    res.status(400).send(answer);
+    return;
+  }
+
+  if (!req.body.projName) {
+    answer.status = `P2M4E2`;
+    answer.msg = "missing project name";
+    res.status(400).send(answer);
+    return;
+  }
+
+  // transforming the received data into transfer objects
+  let projName = req.body.projName;
+
+  // actually delegating flow of execution for the user case
+  let project;
   let httpStatus = 200;
+
+  let ownerName = req.headers.user.name;
+  try {
+    project = await ProjectCore.getProject({ ownerName, projName });
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P2M4E3`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P2M4E4`;
+        answer.msg = error.msg;
+        break;
+
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
 
   // success case
   if (httpStatus === 200) {
     answer.status = "0";
-    answer.data = projects;
+    answer.data = project;
   }
 
-  httpStatus = 501;
   res.status(httpStatus).send(answer);
 }
 

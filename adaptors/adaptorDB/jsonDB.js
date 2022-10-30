@@ -159,6 +159,7 @@ export async function saveProject(project) {
 /**
  * Search and retrieves the projects of a specific user
  * @param {string} ownerName name of the owner of the projects to be searched
+ * @returns {* | undefined} all projects from the given user
  */
 export async function getAllProject(ownerName) {
   // searching for the user existense
@@ -169,7 +170,55 @@ export async function getAllProject(ownerName) {
 
   let projects = db.users[user.name].projects;
 
-  return projects
+  return projects;
+}
+
+/**
+ * Search the specific project from the specific user
+ * @param {string} ownerName user's name
+ * @param {string} projName project's name
+ * @returns {* | undefined} the specific project requested or undefined
+ */
+export async function getProject(ownerName, projName) {
+  // searching for the user existense
+  let user = await searchByName(ownerName);
+  if (!user) {
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
+  }
+
+  let project = db.users[user.name].projects[projName];
+  if (!project) {
+    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
+  }
+
+  return project;
+}
+
+/**
+ * Delete the specific project from the specific user
+ * @param {string} ownerName user's name
+ * @param {string} projName project's name
+ * @returns {* | undefined} the specific project delete or undefined
+ */
+export async function deleteProject(ownerName, projName) {
+  // searching for the user existense
+  let user = await searchByName(ownerName);
+  if (!user) {
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
+  }
+
+  let project = db.users[user.name].projects[projName];
+  if (!project) {
+    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
+  }
+
+  // "transaction"
+  delete db.users[user.name].projects[projName];
+
+  // commit
+  saveDb();
+
+  return project;
 }
 
 /* LOCAL FUNCTIONS */
