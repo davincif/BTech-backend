@@ -21,7 +21,7 @@ async function register(req, res) {
     Array.isArray(req.body)
   ) {
     answer.status = `P1M1E1`;
-    answer.msg = "missing body info";
+    answer.msg = "MISSING BODY INFO";
     res.status(400).send(answer);
     return;
   }
@@ -99,7 +99,7 @@ async function login(req, res) {
     Array.isArray(req.body)
   ) {
     answer.status = `P1M2E1`;
-    answer.msg = "missing body info";
+    answer.msg = "MISSING BODY INFO";
     res.status(400).send(answer);
     return;
   }
@@ -185,7 +185,7 @@ async function logout(req, res) {
     Array.isArray(req.body)
   ) {
     answer.status = `P1M3E1`;
-    answer.msg = "missing body info";
+    answer.msg = "MISSING BODY INFO";
     res.status(400).send(answer);
     return;
   }

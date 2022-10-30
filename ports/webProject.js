@@ -20,7 +20,7 @@ async function create(req, res) {
     Array.isArray(req.body)
   ) {
     answer.status = `P2M1E1`;
-    answer.msg = "missing body info";
+    answer.msg = "MISSING BODY INFO";
     res.status(400).send(answer);
     return;
   }
@@ -149,7 +149,7 @@ async function del(req, res) {
     Array.isArray(req.body)
   ) {
     answer.status = `P2M4E1`;
-    answer.msg = "missing body info";
+    answer.msg = "MISSING BODY INFO";
     res.status(400).send(answer);
     return;
   }
