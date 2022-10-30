@@ -156,6 +156,22 @@ export async function saveProject(project) {
   return project;
 }
 
+/**
+ * Search and retrieves the projects of a specific user
+ * @param {string} ownerName name of the owner of the projects to be searched
+ */
+export async function getAllProject(ownerName) {
+  // searching for the user existense
+  let user = await searchByName(ownerName);
+  if (!user) {
+    throw DB_ERRORS.ENTRY_DOESNT_EXIST;
+  }
+
+  let projects = db.users[user.name].projects;
+
+  return projects
+}
+
 /* LOCAL FUNCTIONS */
 
 /**

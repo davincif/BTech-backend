@@ -46,9 +46,36 @@ export async function create(project) {
 
 /**
  * Get all projects Project of a user
+ * @param {string} ownerName The project to be created
  */
-export async function getAll() {
-  // code
+export async function getAll({ ownerName }) {
+  if (!ownerName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION OWNER NAME";
+    throw coreErr;
+  }
+
+  let projects;
+  try {
+    projects = await DB_ADAPTOR.getAllProject(ownerName);
+  } catch (error) {
+    const coreErr = new TObjectError();
+
+    switch (error) {
+      case DB_ERRORS.ENTRY_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS USER EXIST?";
+        throw coreErr;
+
+      default:
+        coreErr.code = CoreErros.UNKOWN;
+        coreErr.msg = "DATABASE UNKOWN ERROR";
+        throw coreErr;
+    }
+  }
+
+  return projects;
 }
 
 /**

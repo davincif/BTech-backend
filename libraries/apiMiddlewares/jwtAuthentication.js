@@ -23,9 +23,10 @@ export async function authRequired(req, res, next) {
     return;
   }
 
+  let userName = jwtinfo.payload.name;
   let isAuth = await islogedAndAuthenticated({
     jwt,
-    name: jwtinfo.payload.name,
+    name: userName,
   });
   if (!isAuth) {
     // is not loged or the authentication does not match
@@ -33,5 +34,8 @@ export async function authRequired(req, res, next) {
     return;
   }
 
+  req.headers["user"] = {
+    name: userName,
+  };
   next();
 }

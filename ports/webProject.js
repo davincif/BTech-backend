@@ -31,18 +31,12 @@ async function create(req, res) {
     res.status(400).send(answer);
     return;
   }
-  if (!req.body.owner) {
-    answer.status = `P2M1E5`;
-    answer.msg = "missing owner name";
-    res.status(400).send(answer);
-    return;
-  }
 
   // transforming the received data into transfer objects
   let project = new TObjectProject();
   project.name = req.body.name;
   project.creationDate = req.body.creationDate;
-  project.owner = req.body.owner;
+  project.owner = req.headers.user.name;
 
   // actually delegating flow of execution for the user case
   let craetedProj;
@@ -61,6 +55,12 @@ async function create(req, res) {
       case CoreErros.DATABASE_CONFLICT:
         httpStatus = 400;
         answer.status = `P2M1E4`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.ENTRY_DOESNT_EXIST:
+        httpStatus = 400;
+        answer.status = `P2M1E5`;
         answer.msg = error.msg;
         break;
 
@@ -86,14 +86,34 @@ async function create(req, res) {
  */
 async function getAll(req, res) {
   const answer = new StandardAnswer();
+
+  // actually delegating flow of execution for the user case
+  let projects;
   let httpStatus = 200;
+
+  let ownerName = req.headers.user.name;
+  try {
+    projects = await ProjectCore.getAll({ ownerName });
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.ENTRY_DOESNT_EXIST:
+        httpStatus = 400;
+        answer.status = `P2M1E5`;
+        answer.msg = error.msg;
+        break;
+
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
 
   // success case
   if (httpStatus === 200) {
     answer.status = "0";
+    answer.data = projects;
   }
 
-  httpStatus = 501;
   res.status(httpStatus).send(answer);
 }
 
@@ -127,6 +147,7 @@ async function del(req, res) {
   // success case
   if (httpStatus === 200) {
     answer.status = "0";
+    answer.data = projects;
   }
 
   httpStatus = 501;
