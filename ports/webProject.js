@@ -170,7 +170,7 @@ async function del(req, res) {
 
   let ownerName = req.headers.user.name;
   try {
-    project = await ProjectCore.getProject({ ownerName, projName });
+    project = await ProjectCore.del({ ownerName, projName });
   } catch (error) {
     switch (error.code) {
       case CoreErros.MISSING_DATA:

@@ -84,6 +84,22 @@ export async function getAll({ ownerName }) {
  * @returns {* | undefined} the deleted project
  */
 export async function getProject({ ownerName, projName }) {
+  // code
+}
+
+/**
+ * Update a particular Project of a user
+ */
+export async function update() {
+  // code
+}
+
+/**
+ * Deletes a particular Project of a user
+ * @param {*} param0 owner and project's name
+ * @returns {* | undefined} the deleted project
+ */
+export async function del({ ownerName, projName }) {
   if (!ownerName) {
     const coreErr = new TObjectError();
     coreErr.code = CoreErros.MISSING_DATA;
@@ -122,18 +138,4 @@ export async function getProject({ ownerName, projName }) {
   }
 
   return project;
-}
-
-/**
- * Update a particular Project of a user
- */
-export async function update() {
-  // code
-}
-
-/**
- * Deletes a particular Project of a user
- */
-export async function del() {
-  // code
 }
