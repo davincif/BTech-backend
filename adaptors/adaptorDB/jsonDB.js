@@ -2,7 +2,7 @@ import * as fs from "fs";
 
 import { AuthenUserDB } from "../../objects/out/authenUserDB.js";
 import { UserDB } from "../../objects/out/userDB.js";
-import { AuthenProjectDB } from "../../objects/out/authenProjectDB.js";
+import { ProjectDB } from "../../objects/out/projectDB.js";
 import { DB_ERRORS } from "./errorCodes.js";
 
 const dbPath = "./db.json";
@@ -140,7 +140,7 @@ export async function saveProject(project) {
   }
 
   // converting object for data base use
-  const dbproject = new AuthenProjectDB();
+  const dbproject = new ProjectDB();
   dbproject.name = project.name;
   dbproject.creationDate = project.creationDate;
 
