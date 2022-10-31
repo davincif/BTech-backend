@@ -4,6 +4,7 @@ import * as CoreErros from "../objects/core/coreErros.js";
 import * as ProjectCore from "../core/projectCore.js";
 import * as jwtAuthentication from "../libraries/apiMiddlewares/jwtAuthentication.js";
 import { TObjectProject } from "../objects/transionals/tObjectProject.js";
+import { TObjectUpdateProject } from "../objects/transionals/tObjectUpdateProject.js";
 
 /**
  * Creates a new Project for the given user
@@ -124,14 +125,68 @@ async function getAll(req, res) {
  */
 async function update(req, res) {
   const answer = new StandardAnswer();
+
+  // data consistency check
+  if (
+    !req.body ||
+    Object.keys(req.body).length === 0 ||
+    Array.isArray(req.body)
+  ) {
+    answer.status = `P2M3E1`;
+    answer.msg = "MISSING BODY INFO";
+    res.status(400).send(answer);
+    return;
+  }
+
+  if (!req.body.oldName) {
+    answer.status = `P2M3E3`;
+    answer.msg = "missing project name";
+    res.status(400).send(answer);
+    return;
+  }
+  if (!req.body.newName) {
+    answer.status = `P2M3E4`;
+    answer.msg = "missing project new updated project's name";
+    res.status(400).send(answer);
+    return;
+  }
+
+  // transforming the received data into transfer objects
   let httpStatus = 200;
+  const updatedProject = new TObjectUpdateProject();
+  updatedProject.ownerName = req.headers.user.name;
+  updatedProject.oldName = req.body.oldName;
+  updatedProject.newName = req.body.newName;
+
+  let project;
+  try {
+    project = await ProjectCore.update({ updatedProject });
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P2M3E5`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P2M3E6`;
+        answer.msg = error.msg;
+        break;
+
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
 
   // success case
   if (httpStatus === 200) {
     answer.status = "0";
+    answer.data = project;
   }
 
-  httpStatus = 501;
   res.status(httpStatus).send(answer);
 }
 
@@ -142,6 +197,7 @@ async function update(req, res) {
  */
 async function del(req, res) {
   const answer = new StandardAnswer();
+
   // data consistency check
   if (
     !req.body ||

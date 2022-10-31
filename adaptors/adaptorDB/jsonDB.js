@@ -221,6 +221,26 @@ export async function deleteProject(ownerName, projName) {
   return project;
 }
 
+/**
+ * Updates the given project with the given new informations about it
+ * @param {TObjectUpdateProject} updatedProject project with updated info
+ */
+export async function updateProject(updatedProject) {
+  // searching for the user existense
+  const oldProject = await getProject(
+    updatedProject.ownerName,
+    updatedProject.oldName
+  );
+
+  // "transaction"
+  oldProject.name = updatedProject.newName;
+
+  // commit
+  saveDb();
+
+  return oldProject;
+}
+
 /* LOCAL FUNCTIONS */
 
 /**

@@ -89,9 +89,46 @@ export async function getProject({ ownerName, projName }) {
 
 /**
  * Update a particular Project of a user
+ * @param {TObjectUpdateProject} updatedProject project with updated info
  */
-export async function update() {
-  // code
+export async function update({ updatedProject }) {
+  if (
+    !updatedProject ||
+    !updatedProject.ownerName ||
+    !updatedProject.oldName ||
+    !updatedProject.newName
+  ) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION TO UPDATE THE PROJECT";
+    throw coreErr;
+  }
+
+  let project;
+  try {
+    project = await DB_ADAPTOR.updateProject(updatedProject);
+  } catch (error) {
+    const coreErr = new TObjectError();
+
+    switch (error) {
+      case DB_ERRORS.ENTRY_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS USER EXIST?";
+        throw coreErr;
+
+      case DB_ERRORS.PROJECT_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS PROJECT EXIST IN THIS USER?";
+        throw coreErr;
+
+      default:
+        coreErr.code = CoreErros.UNKOWN;
+        coreErr.msg = "DATABASE UNKOWN ERROR";
+        throw coreErr;
+    }
+  }
+
+  return project;
 }
 
 /**
