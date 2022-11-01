@@ -5,8 +5,9 @@ import cors from "cors";
 
 import { webUserConfigure } from "./ports/webUser.js";
 import { webProjectConfigure } from "./ports/webProject.js";
+import { webTaskConfigure } from "./ports/webTask.js";
 
-const apiModules = [webUserConfigure, webProjectConfigure];
+const apiModules = [webUserConfigure, webProjectConfigure, webTaskConfigure];
 const app = express();
 
 function init() {

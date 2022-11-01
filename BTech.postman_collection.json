@@ -142,7 +142,54 @@
 		},
 		{
 			"name": "tasks",
-			"item": [],
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/task/getAll/proj01",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"task",
+								"getAll",
+								"proj01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"proj01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/task/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"task",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"auth": {
 				"type": "bearer",
 				"bearer": [

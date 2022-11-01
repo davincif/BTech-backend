@@ -260,7 +260,7 @@ async function del(req, res) {
 const webProjectConfigure = new ApiConfigure();
 webProjectConfigure.prefix = "/project";
 webProjectConfigure.middlewares.push(jwtAuthentication.authRequired);
-webProjectConfigure.get.push(["/getAll", getAll]);
+webProjectConfigure.get.push(["/getAll/", getAll]);
 webProjectConfigure.post.push(["/create", create]);
 webProjectConfigure.put.push(["/update", update]);
 webProjectConfigure.delete.push(["/del", del]);

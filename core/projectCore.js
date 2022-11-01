@@ -65,7 +65,7 @@ export async function getAll({ ownerName }) {
     switch (error) {
       case DB_ERRORS.ENTRY_DOESNT_EXIST:
         coreErr.code = CoreErros.MISSING_DATA;
-        coreErr.msg = "DOES THIS USER EXIST?";
+        coreErr.msg = "DOES THIS USER OR PROJECT EXISTS?";
         throw coreErr;
 
       default:
@@ -78,14 +78,14 @@ export async function getAll({ ownerName }) {
   return projects;
 }
 
-/**
- * Search the specific project from the specific user
- * @param {*} param0 owner and project's name
- * @returns {* | undefined} the deleted project
- */
-export async function getProject({ ownerName, projName }) {
-  // code
-}
+// /**
+//  * Search the specific project from the specific user
+//  * @param {*} param0 owner and project's name
+//  * @returns {* | undefined} the deleted project
+//  */
+// export async function getProject({ ownerName, projName }) {
+//   // code
+// }
 
 /**
  * Update a particular Project of a user

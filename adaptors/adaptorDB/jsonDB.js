@@ -241,6 +241,82 @@ export async function updateProject(updatedProject) {
   return oldProject;
 }
 
+/**
+ * Saves the given task to the database
+ * @param {TObjectTask} task task to be saved on the DB
+ */
+export async function saveTask(task) {
+  const project = getProject(task.ownerName, task.ProjName);
+  if (!project) {
+    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
+  }
+
+  // create tasks for this user's project if needed
+  if (!projects.taks) {
+    projects.taks = {};
+  }
+
+  // check if this task already exists
+  if (projects.taks[task.id]) {
+    throw DB_ERRORS.ENTRY_ALREADY_EXISTS;
+  }
+
+  // converting object for data base use
+  const dbTask = new TasksDB();
+  dbTask.id = task.id;
+  dbTask.description = task.description;
+  dbTask.creationDate = task.creationDate;
+  dbTask.terminationDate = task.terminationDate;
+
+  // "transaction"
+  projects.tasks[task.id] = {
+    id: dbTask.id,
+    description: dbTask.description,
+    creationDate: dbTask.creationDate,
+    terminationDate: dbTask.terminationDate,
+  };
+
+  // commit
+  saveDb();
+}
+
+/**
+ * Gets the given task from the database
+ * @param {string} ownerName user's name
+ * @param {string} ProjName project's name
+ * @returns {TasksDB | undefined}
+ */
+export async function getAllTasks(ownerName, ProjName) {
+  const project = await getProject(ownerName, ProjName);
+  if (!project) {
+    return;
+  }
+
+  return project.tasks;
+}
+
+/**
+ * Deletes the given task from the database
+ * @param {TObjectTask} task task to be saved on the DB
+ */
+export async function deleteTask(task) {
+  const project = getProject(task.ownerName, task.ProjName);
+  if (!project) {
+    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
+  }
+
+  // check if this task already exists
+  if (projects.taks[task.id]) {
+    throw DB_ERRORS.ENTRY_ALREADY_EXISTS;
+  }
+
+  // "transaction"
+  projects.taks[task.id];
+
+  // commit
+  saveDb();
+}
+
 /* LOCAL FUNCTIONS */
 
 /**
