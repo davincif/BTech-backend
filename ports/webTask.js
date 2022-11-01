@@ -3,9 +3,10 @@ import * as jwtAuthentication from "../libraries/apiMiddlewares/jwtAuthenticatio
 import { StandardAnswer } from "../objects/out/standardAnswer.js";
 import * as TaskCore from "../core/taskCore.js";
 import * as CoreErros from "../objects/core/coreErros.js";
+import { TObjectTask } from "../objects/transionals/tObjectTask.js";
 
 /**
- * Creates a new task for the logged user's in the given project
+ * Creates a new task for the logged user in the given project
  * @param {*} req express 'rep' from route
  * @param {*} res express 'res' from route
  */
@@ -37,10 +38,46 @@ async function create(req, res) {
     return;
   }
 
+  // transforming the received data into transfer objects
+  let taskTransfer = new TObjectTask();
+  taskTransfer.ownerName = req.headers.user.name;
+  taskTransfer.projName = req.body.projName;
+  taskTransfer.description = req.body.projName;
+
+  // actually delegating flow of execution for the user case
+  let task;
   let httpStatus = 201;
 
-  // NOT IMPLEMENTED
-  httpStatus = 501;
+  try {
+    task = await TaskCore.create(taskTransfer);
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M1E4`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.PROJECT_DOESNT_EXISTS:
+        httpStatus = 400;
+        answer.status = `P3M1E5`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P3M3E6`;
+        answer.msg = error.msg;
+        break;
+    }
+  }
+
+  // success case
+  if (httpStatus === 201) {
+    answer.status = "0";
+    answer.data = task || {};
+  }
+
   res.status(httpStatus).send(answer);
 }
 
@@ -82,6 +119,18 @@ async function getAll(req, res) {
         answer.msg = error.msg;
         break;
 
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M2E7`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P3M3E8`;
+        answer.msg = error.msg;
+        break;
+
       default:
         httpStatus = 500;
         break;
@@ -98,11 +147,11 @@ async function getAll(req, res) {
 }
 
 /**
- * Updates a task for the logged user's in the given project
+ * Updates a task of the logged user in the given project
  * @param {*} req express 'rep' from route
  * @param {*} res express 'res' from route
  */
-async function update(req, res) {
+async function finish(req, res) {
   const answer = new StandardAnswer();
 
   let httpStatus = 200;
@@ -112,6 +161,11 @@ async function update(req, res) {
   res.status(httpStatus).send(answer);
 }
 
+/**
+ * Delete a task of the logged user in the given project
+ * @param {*} req express 'rep' from route
+ * @param {*} res express 'res' from route
+ */
 async function del(req, res) {
   const answer = new StandardAnswer();
 
@@ -128,7 +182,7 @@ webTaskConfigure.prefix = "/task";
 webTaskConfigure.middlewares.push(jwtAuthentication.authRequired);
 webTaskConfigure.get.push(["/getAll/:projName", getAll]);
 webTaskConfigure.post.push(["/create", create]);
-webTaskConfigure.put.push(["/update", update]);
+webTaskConfigure.put.push(["/finish", finish]);
 webTaskConfigure.delete.push(["/del", del]);
 
 export { webTaskConfigure };

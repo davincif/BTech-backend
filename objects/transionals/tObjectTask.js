@@ -3,8 +3,7 @@
  */
 export class TObjectTask {
   ownerName = "";
-  ProjName = "";
-  name = "";
+  projName = "";
   description = "";
   creationDate = "";
   terminationDate = undefined;
