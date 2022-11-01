@@ -9,13 +9,19 @@ import { TObjectTask } from "../objects/transionals/tObjectTask.js";
  * @param {TObjectTask} task The user's project to be created
  */
 export async function create(task) {
-  if (!task?.projName) {
+  if (!task?.ownerName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION: USER NAME";
+    throw coreErr;
+  }
+  if (!task.projName) {
     const coreErr = new TObjectError();
     coreErr.code = CoreErros.MISSING_DATA;
     coreErr.msg = "MISSING INFORMATION: PROJECT NAME";
     throw coreErr;
   }
-  if (!task?.description) {
+  if (!task.description) {
     const coreErr = new TObjectError();
     coreErr.code = CoreErros.MISSING_DATA;
     coreErr.msg = "MISSING INFORMATION DESCRIPTION";

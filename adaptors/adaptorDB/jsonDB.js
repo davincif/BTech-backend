@@ -259,7 +259,8 @@ export async function saveTask(task) {
 
   // converting object for data base use
   const dbTask = new TasksDB();
-  dbTask.id = Object.keys(project.tasks).length;
+  let tasksKeys = Object.keys(project.tasks);
+  dbTask.id = (Number(tasksKeys[tasksKeys.length-1]) || 0) + 1;
   dbTask.description = task.description;
   dbTask.creationDate = task.creationDate;
   dbTask.terminationDate = task.terminationDate;

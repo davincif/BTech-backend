@@ -42,7 +42,7 @@ async function create(req, res) {
   let taskTransfer = new TObjectTask();
   taskTransfer.ownerName = req.headers.user.name;
   taskTransfer.projName = req.body.projName;
-  taskTransfer.description = req.body.projName;
+  taskTransfer.description = req.body.description;
 
   // actually delegating flow of execution for the user case
   let task;
