@@ -5,6 +5,7 @@ import { UserDB } from "../../objects/out/userDB.js";
 import { ProjectDB } from "../../objects/out/projectDB.js";
 import { TasksDB } from "../../objects/out/tasksDB.js";
 import { DB_ERRORS } from "./errorCodes.js";
+import { TObjectTask } from "../../objects/transionals/tObjectTask.js";
 
 const dbPath = "./db.json";
 const encoding = "utf8";
@@ -260,7 +261,7 @@ export async function saveTask(task) {
   // converting object for data base use
   const dbTask = new TasksDB();
   let tasksKeys = Object.keys(project.tasks);
-  dbTask.id = (Number(tasksKeys[tasksKeys.length-1]) || 0) + 1;
+  dbTask.id = (Number(tasksKeys[tasksKeys.length - 1]) || 0) + 1;
   dbTask.description = task.description;
   dbTask.creationDate = task.creationDate;
   dbTask.terminationDate = task.terminationDate;
@@ -280,14 +281,15 @@ export async function saveTask(task) {
 }
 
 /**
- * Gets the given task from the database
+ * Gets all tasks from the database for the given user and project
  * @param {string} ownerName user's name
  * @param {string} projName project's name
- * @returns {TasksDB | undefined}
+ * @returns {{[id:string]: TasksDB} | undefined}
  */
 export async function getAllTasks(ownerName, projName) {
   const project = await getProject(ownerName, projName);
   if (!project) {
+    // the function getProject already takes care of throwing an error if the project isn't find
     return;
   }
 
@@ -295,17 +297,27 @@ export async function getAllTasks(ownerName, projName) {
 }
 
 /**
+ * Retrieves the specific given task from the database
+ * @param {TObjectTask} task task to be saved on the DB
+ * @returns {TasksDB | undefined}
+ */
+export async function getTask(task) {
+  const project = await getProject(task.ownerName, task.projName);
+  if (!project) {
+    // the function getProject already takes care of throwing an error if the project isn't find
+    return;
+  }
+
+  return project.tasks[task.taskID];
+}
+
+/**
  * Deletes the given task from the database
  * @param {TObjectTask} task task to be saved on the DB
  */
 export async function deleteTask(task) {
-  const project = await getProject(task.ownerName, task.projName);
-  if (!project) {
-    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
-  }
-
   // check if this task already exists
-  let taskToResturn = project.tasks[task.taskID];
+  let taskToResturn = await getTask(task);
   if (!taskToResturn) {
     throw DB_ERRORS.TASK_DOESNT_EXIST;
   }
@@ -317,6 +329,43 @@ export async function deleteTask(task) {
   saveDb();
 
   return taskToResturn;
+}
+
+/**
+ * Updates the given task in the database
+ * @param {TObjectTask} task task to be saved on the DB
+ */
+export async function updateTask(task) {
+  const project = await getProject(task.ownerName, task.projName);
+  if (!project) {
+    throw DB_ERRORS.PROJECT_DOESNT_EXIST;
+  }
+
+  // check if this task already exists
+  let taskToUpdate = project.tasks[task.taskID];
+  if (!taskToUpdate) {
+    throw DB_ERRORS.TASK_DOESNT_EXIST;
+  }
+
+  // "transaction"
+  taskToUpdate.description = task.description || taskToUpdate.description;
+  taskToUpdate.creationDate = task.creationDate || taskToUpdate.creationDate;
+  taskToUpdate.terminationDate =
+    task.terminationDate || taskToUpdate.terminationDate;
+
+  // commit
+  saveDb();
+
+  // data transform to transferData
+  let retTask = new TObjectTask();
+  retTask.ownerName = task.ownerName;
+  retTask.projName = task.projName;
+  retTask.taskID = task.taskID;
+  retTask.description = taskToUpdate.description;
+  retTask.creationDate = taskToUpdate.creationDate;
+  retTask.terminationDate = taskToUpdate.terminationDate;
+
+  return retTask;
 }
 
 /* LOCAL FUNCTIONS */

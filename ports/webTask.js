@@ -4,6 +4,7 @@ import { StandardAnswer } from "../objects/out/standardAnswer.js";
 import * as TaskCore from "../core/taskCore.js";
 import * as CoreErros from "../objects/core/coreErros.js";
 import { TObjectTask } from "../objects/transionals/tObjectTask.js";
+import { TasksWeb } from "../objects/out/tasksWeb.js";
 
 /**
  * Creates a new task for the logged user in the given project
@@ -154,10 +155,80 @@ async function getAll(req, res) {
 async function finish(req, res) {
   const answer = new StandardAnswer();
 
-  let httpStatus = 200;
+  // data consistency check
+  if (
+    !req.body ||
+    Object.keys(req.body).length === 0 ||
+    Array.isArray(req.body)
+  ) {
+    answer.status = `P3M3E1`;
+    answer.msg = "MISSING BODY INFO";
+    res.status(400).send(answer);
+    return;
+  }
 
-  // NOT IMPLEMENTED
-  httpStatus = 501;
+  if (!req.body.taskID) {
+    answer.status = `P3M3E2`;
+    answer.msg = "missing task id";
+    res.status(400).send(answer);
+    return;
+  }
+  if (!req.body.projName) {
+    answer.status = `P3M3E3`;
+    answer.msg = "missing project name";
+    res.status(400).send(answer);
+    return;
+  }
+
+  // actually delegating flow of execution for the user case
+  let httpStatus = 200;
+  let task = new TObjectTask();
+  task.ownerName = req.headers.user.name;
+  task.projName = req.body.projName;
+  task.taskID = req.body.taskID;
+
+  let finishedTask;
+  try {
+    finishedTask = await TaskCore.finish(task);
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M3E4`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.MODIFYING_IMMUTABLE:
+        httpStatus = 400;
+        answer.status = `P3M3E6`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P3M3E7`;
+        answer.msg = error.msg;
+        break;
+
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
+
+  // success case
+  if (httpStatus === 200) {
+    // data conversion, transfer to web
+    let webTask = new TasksWeb();
+    webTask.id = finishedTask.taskID;
+    webTask.description = finishedTask.description;
+    webTask.creationDate = finishedTask.creationDate;
+    webTask.terminationDate = finishedTask.terminationDate;
+
+    answer.status = "0";
+    answer.data = webTask;
+  }
+
   res.status(httpStatus).send(answer);
 }
 
@@ -214,18 +285,6 @@ async function del(req, res) {
         answer.msg = error.msg;
         break;
 
-      case CoreErros.MISSING_DATA:
-        httpStatus = 400;
-        answer.status = `P3M4E5`;
-        answer.msg = error.msg;
-        break;
-
-      case CoreErros.MISSING_DATA:
-        httpStatus = 400;
-        answer.status = `P3M4E6`;
-        answer.msg = error.msg;
-        break;
-
       case CoreErros.UNKOWN:
         httpStatus = 400;
         answer.status = `P3M4E7`;
@@ -253,7 +312,7 @@ webTaskConfigure.prefix = "/task";
 webTaskConfigure.middlewares.push(jwtAuthentication.authRequired);
 webTaskConfigure.get.push(["/getAll/:projName", getAll]);
 webTaskConfigure.post.push(["/create", create]);
-webTaskConfigure.put.push(["/finish", finish]);
+webTaskConfigure.patch.push(["/finish", finish]);
 webTaskConfigure.delete.push(["/del", del]);
 
 export { webTaskConfigure };
