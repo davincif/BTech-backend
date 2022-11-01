@@ -236,6 +236,9 @@ export async function updateProject(updatedProject) {
 
   // "transaction"
   oldProject.name = updatedProject.newName;
+  db.users[updatedProject.ownerName].projects[updatedProject.newName] =
+    db.users[updatedProject.ownerName].projects[updatedProject.oldName];
+  delete db.users[updatedProject.ownerName].projects[updatedProject.oldName];
 
   // commit
   saveDb();

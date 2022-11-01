@@ -34,7 +34,77 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"proj01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/project/create",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"project",
+										"create"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-PQmfnhrbaStwkwowI2cfgctm9jI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:23:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"name\": \"proj01\",\n        \"creationDate\": \"2022-11-01T20:23:42.443Z\",\n        \"owner\": \"davincif\"\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "update",
@@ -43,7 +113,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"oldName\": \"proj01\",\n  \"newName\": \"A Better Project Name\"\n}\n",
+							"raw": "{\n  \"oldName\": \"proj01\",\n  \"newName\": \"a better project name\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -61,7 +131,146 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"oldName\": \"proj01\",\n  \"newName\": \"a better project name\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/project/update",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"project",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "96"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"60-xaLMH8/upjJJMinIx4mZcpKTHrQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:24:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"name\": \"a better project name\",\n        \"creationDate\": \"2022-11-01T20:23:42.443Z\"\n    }\n}"
+						},
+						{
+							"name": "update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"oldName\": \"proj01\",\n  \"newName\": \"A Better Project Name\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/project/update",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"project",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "514"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"202-W5cEI3pVAVewmwiApLbqR7sXc4U\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 19:19:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"name\": \"A Better Project Name\",\n        \"creationDate\": \"2022-10-31T00:55:08.348Z\",\n        \"tasks\": {\n            \"2\": {\n                \"id\": 2,\n                \"description\": \"Um Task Mucho Lôca\",\n                \"creationDate\": \"2022-11-01T14:10:08.244Z\"\n            },\n            \"3\": {\n                \"id\": 3,\n                \"description\": \"famoso 3 capa\",\n                \"creationDate\": \"2022-11-01T14:12:10.154Z\",\n                \"terminationDate\": \"2022-11-01T17:14:53.709Z\"\n            },\n            \"4\": {\n                \"id\": \"4\",\n                \"description\": \"Um Task Mucho Lôca\",\n                \"creationDate\": \"2022-11-01T14:13:27.426Z\"\n            },\n            \"5\": {\n                \"id\": 5,\n                \"description\": \"Um Task Mucho Lôca 03\",\n                \"creationDate\": \"2022-11-01T14:13:56.670Z\"\n            }\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "getAll",
@@ -79,7 +288,68 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/project/getAll",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"project",
+										"getAll"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "258"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"102-z4isOVhOwf2y+tlimkT7pbFKe/8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:24:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"proj01\": {\n            \"name\": \"proj01\",\n            \"creationDate\": \"2022-11-01T20:23:42.443Z\"\n        },\n        \"proj01 asdasd\": {\n            \"name\": \"proj01 asdasd\",\n            \"creationDate\": \"2022-11-01T20:23:56.100Z\"\n        },\n        \"famoso 3 capa\": {\n            \"name\": \"famoso 3 capa\",\n            \"creationDate\": \"2022-11-01T20:24:06.913Z\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "del",
@@ -160,7 +430,130 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/task/getAll/proj01",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"task",
+										"getAll",
+										"proj01"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "24"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18-IigvYeu8hZh2ZNy/QELHi7v4nSA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:39:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/task/getAll/proj01",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"task",
+										"getAll",
+										"proj01"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "431"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1af-0LewS1jcPT5f10HuqvuMtohcHsQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 19:18:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"2\": {\n            \"id\": 2,\n            \"description\": \"Um Task Mucho Lôca\",\n            \"creationDate\": \"2022-11-01T14:10:08.244Z\"\n        },\n        \"3\": {\n            \"id\": 3,\n            \"description\": \"famoso 3 capa\",\n            \"creationDate\": \"2022-11-01T14:12:10.154Z\",\n            \"terminationDate\": \"2022-11-01T17:14:53.709Z\"\n        },\n        \"4\": {\n            \"id\": \"4\",\n            \"description\": \"Um Task Mucho Lôca\",\n            \"creationDate\": \"2022-11-01T14:13:27.426Z\"\n        },\n        \"5\": {\n            \"id\": 5,\n            \"description\": \"Um Task Mucho Lôca 03\",\n            \"creationDate\": \"2022-11-01T14:13:56.670Z\"\n        }\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "create",
@@ -169,7 +562,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"proj01\"\n}",
+							"raw": "{\n    \"projName\": \"proj01\",\n    \"description\": \"Um Task Mucho Lôca\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,6 +577,130 @@
 							"path": [
 								"task",
 								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"projName\": \"proj01\",\n    \"description\": \"Um Task Mucho Lôca\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/task/create",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"task",
+										"create"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "108"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6c-EhtVzaA0ke7O52qxMssZfMJJ+QE\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:39:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"id\": 1,\n        \"description\": \"Um Task Mucho Lôca\",\n        \"creationDate\": \"2022-11-01T20:39:47.625Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "del",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projName\": \"proj01\",\n    \"id\": \"2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/task/del",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"task",
+								"del"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"taskID\": 3,\n    \"projName\": \"proj01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/task/finish",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"task",
+								"finish"
 							]
 						}
 					},
@@ -222,6 +739,250 @@
 			]
 		},
 		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"davincif\",\n    \"birth\": \"1994-02-09\",\n    \"password\": \"xablau\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"davincif\",\n    \"birth\": \"1994-02-09\",\n    \"password\": \"xablau\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "82"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"52-zsHKcgjdXGYq4GAc+sDL2FXR+Z8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 20:23:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"name\": \"davincif\",\n        \"birth\": \"1994-02-09\",\n        \"password\": \"xablau\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let resp = pm.response.json();",
+									"if(!resp.data || !resp.data.jwt) {",
+									"    return",
+									"}",
+									"",
+									"let _token = resp.data.jwt",
+									"",
+									"pm.environment.set(\"token\", pm.globals.set('token', _token));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"davincif\",\n    \"password\": \"xablau\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"davincif\",\n    \"password\": \"xablau\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:4200"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "229"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e5-j08/g5ictYAZuDIn4XjcbUg8uKU\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Nov 2022 19:18:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"0\",\n    \"data\": {\n        \"jwt\": \"eyJhbGciOiJIUzUxMiJ9.eyJuYW1lIjoiZGF2aW5jaWYiLCJpYXQiOjE2NjczMzAyOTUsImV4cCI6MTY2NzMzMzg5NX0.T7Nlug43g-ReYYgx8I_uxbxKU_YJv4fCyp-SqUkGx6if2Mr5p9FmSTvmnU1TQE-lR0WcR_FSS1i4diHKDe-fKg\",\n        \"name\": \"davincif\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"davincif\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "helloWorld",
 			"request": {
 				"method": "GET",
@@ -233,105 +994,6 @@
 					],
 					"path": [
 						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"davincif\",\n    \"birth\": \"1994-02-09\",\n    \"password\": \"xablau\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/user/register",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"user",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let resp = pm.response.json();",
-							"if(!resp.data || !resp.data.jwt) {",
-							"    return",
-							"}",
-							"",
-							"let _token = resp.data.jwt",
-							"",
-							"pm.environment.set(\"token\", pm.globals.set('token', _token));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"davincif\",\n    \"password\": \"xablau\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/user/login",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"user",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Logout",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"davincif\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/user/logout",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"user",
-						"logout"
 					]
 				}
 			},
