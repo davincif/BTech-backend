@@ -66,7 +66,7 @@ async function create(req, res) {
 
       case CoreErros.UNKOWN:
         httpStatus = 400;
-        answer.status = `P3M3E6`;
+        answer.status = `P3M1E6`;
         answer.msg = error.msg;
         break;
     }
@@ -90,7 +90,7 @@ async function getAll(req, res) {
   const answer = new StandardAnswer();
 
   // data consistency check
-  if (!req.params.projName) {
+  if (!req.params?.projName) {
     answer.status = `P3M2E2`;
     answer.msg = "missing project name";
     res.status(400).send(answer);
@@ -114,7 +114,7 @@ async function getAll(req, res) {
         break;
 
       case CoreErros.PROJECT_DOESNT_EXISTS:
-        httpStatus = 404;
+        httpStatus = 400;
         answer.status = `P3M2E6`;
         answer.msg = error.msg;
         break;
@@ -127,7 +127,7 @@ async function getAll(req, res) {
 
       case CoreErros.UNKOWN:
         httpStatus = 400;
-        answer.status = `P3M3E8`;
+        answer.status = `P3M2E8`;
         answer.msg = error.msg;
         break;
 
@@ -169,10 +169,81 @@ async function finish(req, res) {
 async function del(req, res) {
   const answer = new StandardAnswer();
 
+  // data consistency check
+  if (
+    !req.body ||
+    Object.keys(req.body).length === 0 ||
+    Array.isArray(req.body)
+  ) {
+    answer.status = `P3M4E1`;
+    answer.msg = "MISSING BODY INFO";
+    res.status(400).send(answer);
+    return;
+  }
+
+  if (!req.body.projName) {
+    answer.status = `P3M4E2`;
+    answer.msg = "missing project name";
+    res.status(400).send(answer);
+    return;
+  }
+  if (!req.body.id) {
+    answer.status = `P3M4E3`;
+    answer.msg = "missing project name";
+    res.status(400).send(answer);
+    return;
+  }
+
+  // actually delegating flow of execution for the user case
+  let delTask;
   let httpStatus = 200;
 
-  // NOT IMPLEMENTED
-  httpStatus = 501;
+  let taskToDelete = {
+    ownerName: req.headers.user.name,
+    projName: req.body.projName,
+    taskID: req.body.id,
+  };
+
+  try {
+    delTask = await TaskCore.del(taskToDelete);
+  } catch (error) {
+    switch (error.code) {
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M4E4`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M4E5`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.MISSING_DATA:
+        httpStatus = 400;
+        answer.status = `P3M4E6`;
+        answer.msg = error.msg;
+        break;
+
+      case CoreErros.UNKOWN:
+        httpStatus = 400;
+        answer.status = `P3M4E7`;
+        answer.msg = error.msg;
+        break;
+
+      default:
+        httpStatus = 500;
+        break;
+    }
+  }
+
+  // success case
+  if (httpStatus === 200) {
+    answer.status = "0";
+    answer.data = delTask || {};
+  }
+
   res.status(httpStatus).send(answer);
 }
 

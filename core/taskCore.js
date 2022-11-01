@@ -2,6 +2,7 @@ import { DB_ADAPTOR } from "../adaptors/adaptorDB.js";
 import { DB_ERRORS } from "../adaptors/adaptorDB/errorCodes.js";
 import * as CoreErros from "../objects/core/coreErros.js";
 import { TObjectError } from "../objects/transionals/tObjectError.js";
+import { TObjectTask } from "../objects/transionals/tObjectTask.js";
 
 /**
  * Get all projects Project of a user
@@ -95,6 +96,59 @@ export async function getAll({ ownerName, projName }) {
   return tasks;
 }
 
-export async function del({ ownerName, projName, taskId }) {
-  // code
+export async function del({ ownerName, projName, taskID }) {
+  if (!ownerName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION OWNER NAME";
+    throw coreErr;
+  }
+  if (!projName) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION PROJECT NAME";
+    throw coreErr;
+  }
+  if (!taskID) {
+    const coreErr = new TObjectError();
+    coreErr.code = CoreErros.MISSING_DATA;
+    coreErr.msg = "MISSING INFORMATION: TASK ID";
+    throw coreErr;
+  }
+
+  let taskToDelete = new TObjectTask();
+  taskToDelete.ownerName = ownerName;
+  taskToDelete.projName = projName;
+  taskToDelete.taskID = taskID;
+
+  let delTask;
+  try {
+    delTask = await DB_ADAPTOR.deleteTask(taskToDelete);
+  } catch (error) {
+    const coreErr = new TObjectError();
+
+    switch (error) {
+      case DB_ERRORS.ENTRY_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS USER EXISTS?";
+        throw coreErr;
+
+      case DB_ERRORS.PROJECT_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS PROJECT EXISTS?";
+        throw coreErr;
+
+      case DB_ERRORS.TASK_DOESNT_EXIST:
+        coreErr.code = CoreErros.MISSING_DATA;
+        coreErr.msg = "DOES THIS TASK EXISTS?";
+        throw coreErr;
+
+      default:
+        coreErr.code = CoreErros.UNKOWN;
+        coreErr.msg = "DATABASE UNKOWN ERROR";
+        throw coreErr;
+    }
+  }
+
+  return delTask;
 }

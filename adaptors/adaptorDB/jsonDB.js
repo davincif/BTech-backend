@@ -304,15 +304,18 @@ export async function deleteTask(task) {
   }
 
   // check if this task already exists
-  if (projects.tasks[task.id]) {
-    throw DB_ERRORS.ENTRY_ALREADY_EXISTS;
+  let taskToResturn = project.tasks[task.taskID];
+  if (!taskToResturn) {
+    throw DB_ERRORS.TASK_DOESNT_EXIST;
   }
 
   // "transaction"
-  projects.tasks[task.id];
+  delete project.tasks[task.taskID];
 
   // commit
   saveDb();
+
+  return taskToResturn;
 }
 
 /* LOCAL FUNCTIONS */
