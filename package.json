@@ -5,8 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node main.js",
-    "watch-start": "nodemon node main.js",
+    "start": "node src/main.js",
+    "watch-start": "nodemon node src/main.js",
+    "build": "gulp",
+    "start-build": "node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "davincif",
@@ -18,6 +20,9 @@
     "jose": "^4.10.4"
   },
   "devDependencies": {
+    "del": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
     "nodemon": "^2.0.20"
   }
 }

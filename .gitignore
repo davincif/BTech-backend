@@ -1,5 +1,8 @@
 # javascript
 node_modules/
 
+# build
+dist/
+
 # detabase related
 db.json
